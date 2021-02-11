@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# Check if correct number of arguments has been provided
+if [ $# -lt 2 ]; then
+    echo "  You need to provide bauds and port (optionally log file)."
+    echo "  Examples:"
+    echo "    serial_open 115200 ttyUSB0"
+    echo "    serial_open 19200 ttyS3 ~/myserial.log"
+    echo ""
+    exit 1
+fi
+
+# Check for log file
+file_log="./serial.log"
+if [ $# -gt 2 ]; then
+    file_log=$3
+fi
+
+echo ""
+echo "Openning Port, close it by pressing \"Ctrl+a, Ctrl+x\""
+echo ""
+sudo picocom -g $file_log -b $1 /dev/$2
+
+exit 0

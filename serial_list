@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+ls -l /sys/class/tty/*/device/driver | grep "usb" | awk '{print $9}' | sed 's/^\/sys\/class\/tty\/\(.*\)\/.*\/.*/\1/'

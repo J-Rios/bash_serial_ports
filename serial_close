@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+# Check if correct number of arguments has been provided
+if [ $# -lt 1 ]; then
+    echo "  You need to provide serial port."
+    echo "  Examples:"
+    echo "    serial_close ttyUSB0"
+    echo "    serial_close ttyS3"
+    echo ""
+    exit 1
+fi
+
+PID=`ps -aux | grep -e "[s]erial_open .* ${1}" | awk 'FNR == 1 {print $2}'`
+
+if [ -z "$PID" ]; then
+    echo "The port is not open."
+    exit 1
+fi
+
+echo "Closing Serial port ${1}, please wait..."
+kill $PID
+while $(kill -0 $PID 2>/dev/null); do
+    sleep 1
+done
+echo "Port closed."
+
+exit 0
