@@ -11,14 +11,14 @@ if [ $# -lt 2 ]; then
 fi
 
 # Check for log file
-file_log="./serial.log"
+file_log="./serial_${2}.log"
 if [ $# -gt 2 ]; then
     file_log=$3
 fi
 
 echo ""
-echo "Openning Port, close it by pressing \"Ctrl+a, Ctrl+x\""
+echo "Openning Port, close it by pressing \"Ctrl+c\""
 echo ""
-sudo picocom -g $file_log -b $1 /dev/$2
+sudo grabserial -B $1 -d /dev/$2 -o $file_log -n -T -F "%Y-%m-%d %H:%M:%S"
 
 exit 0

@@ -10,15 +10,24 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-PID=`ps -aux | grep -e "[s]erial_open .* ${1}" | awk 'FNR == 1 {print $2}'`
+PID=`ps -aux | grep -e "[s]erial_open .* /dev/${1}" | awk 'FNR == 1 {print $2}'`
+PID2=`ps -aux | grep -e "[p]icocom .* /dev/${1}" | awk 'FNR == 1 {print $2}'`
+PID3=`ps -aux | grep -e "[g]rabserial .* /dev/${1}" | awk 'FNR == 1 {print $2}'`
 
-if [ -z "$PID" ]; then
+if [ -z "$PID" ] && [ -z "$PID2" ] && [ -z "$PID3" ]; then
     echo "The port is not open."
     exit 1
 fi
+if [ -z "$PID" ]; then
+    PID=$PID2
+fi
+if [ -z "$PID" ]; then
+    PID=$PID3
+fi
 
 echo "Closing Serial port ${1}, please wait..."
-kill $PID
+
+sudo kill $PID
 while $(kill -0 $PID 2>/dev/null); do
     sleep 1
 done
