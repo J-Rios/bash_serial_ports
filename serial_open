@@ -19,6 +19,6 @@ fi
 echo ""
 echo "Openning Port, close it by pressing \"Ctrl+c\""
 echo ""
-sudo grabserial -B $1 -d /dev/$2 -o $file_log -n -T -F "%Y-%m-%d %H:%M:%S"
+sudo grabserial -B $1 -d /dev/$2 -o $file_log -A -n -T -F "%Y-%m-%d %H:%M:%S"
 
 exit 0
